@@ -102,8 +102,13 @@ public class EmployeService {
         }
 
         Integer performance = Entreprise.PERFORMANCE_BASE;
+        //Cas 1
+        if(caTraite >= objectifCa*1.2 && caTraite < objectifCa*0.95){
+            performance = Entreprise.PERFORMANCE_BASE;
+        }
+
         //Cas 2
-        if(caTraite >= objectifCa*0.8 && caTraite < objectifCa*0.95){
+        if(caTraite < objectifCa*0.8){
             performance = Math.max(Entreprise.PERFORMANCE_BASE, employe.getPerformance() - 2);
         }
         //Cas 3
