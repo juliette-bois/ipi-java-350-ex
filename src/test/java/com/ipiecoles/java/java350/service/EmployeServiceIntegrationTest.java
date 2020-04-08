@@ -37,7 +37,7 @@ public class EmployeServiceIntegrationTest {
         Long caTraite = 799L;
         Long objectifCa = 1000L;
         Integer performanceInit = 10;
-        Integer performanceFinale = 1;
+        Integer performanceFinale = 8;
         employeRepository.save(new Employe("Doe", "John", matricule, LocalDate.now(), Entreprise.SALAIRE_BASE, performanceInit, 1.0));
 
         // When

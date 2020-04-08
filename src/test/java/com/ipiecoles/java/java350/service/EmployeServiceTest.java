@@ -37,7 +37,7 @@ class EmployeServiceTest {
             "'C12345', -2000, 1000"
     })
     public void testParam1CalculPerformanceCommercial(String matricule, Long caTraite, Long objectifCa) throws EmployeException {
-        // Given/When/Then
+        //Given/When/Then
         EmployeException e = Assertions.assertThrows(EmployeException.class, () -> employeService.calculPerformanceCommercial(matricule, caTraite, objectifCa));
         Assertions.assertEquals("Le chiffre d'affaire traité ne peut être négatif ou null !", e.getMessage());
     }
@@ -48,7 +48,7 @@ class EmployeServiceTest {
             "'C12345', 2000, -2000"
     })
     public void testParam2CalculPerformanceCommercial(String matricule, Long caTraite, Long objectifCa) throws EmployeException {
-        // Given/When/Then
+        //Given/When/Then
         EmployeException e = Assertions.assertThrows(EmployeException.class, () -> employeService.calculPerformanceCommercial(matricule, caTraite, objectifCa));
         Assertions.assertEquals("L'objectif de chiffre d'affaire ne peut être négatif ou null !", e.getMessage());
     }
@@ -59,19 +59,19 @@ class EmployeServiceTest {
             "'M12345', 2000, 2000"
     })
     public void testParam3CalculPerformanceCommercial(String matricule, Long caTraite, Long objectifCa) throws EmployeException {
-        // Given/When/Then
+        //Given/When/Then
         EmployeException e = Assertions.assertThrows(EmployeException.class, () -> employeService.calculPerformanceCommercial(matricule, caTraite, objectifCa));
         Assertions.assertEquals("Le matricule ne peut être null et doit commencer par un C !", e.getMessage());
     }
 
-    // Tester tous les cas de performances (5 cas)
+    //Tester tous les cas de performances (5 cas)
     @ParameterizedTest
     @CsvSource({
-            "'C12345', 799, 1000, 10, 2, 1",
-            "'C12345', 799, 1000, 10, 0.5, 2",
+            "'C12345', 799, 1000, 10, 2, 9",
+            "'C12345', 799, 1000, 10, 0.5, 9",
             "'C12345', 800, 1000, 3, 2, 1",
             "'C12345', 949, 1000, 2, 2, 1",
-            "'C12345', 800, 1000, 5, 2, 4",
+            "'C12345', 800, 1000, 5, 2, 1",
             "'C12345', 950, 1000, 2, 3, 2",
             "'C12345', 1050, 1000, 1, 0.5, 2",
             "'C12345', 1051, 1000, 2, 4, 3",
@@ -87,30 +87,30 @@ class EmployeServiceTest {
             Double performanceMoyenne,
             Integer performanceFinale) throws EmployeException{
 
-        // Given
+        //Given
         Employe employe = new Employe("Doe", "John", matricule, LocalDate.now(), 2000d, performanceInit, 1.0);
         when(employeRepository.findByMatricule(matricule)).thenReturn(employe);
         when(employeRepository.avgPerformanceWhereMatriculeStartsWith("C")).thenReturn(performanceMoyenne);
 
-        // When
+        //When
         employeService.calculPerformanceCommercial(matricule, caTraite, objectifCa);
 
-        // Then
+        //Then
         ArgumentCaptor<Employe> employeArgumentCaptor = ArgumentCaptor.forClass(Employe.class);
         verify(employeRepository, times(1)).save(employeArgumentCaptor.capture());
         Assertions.assertEquals(performanceFinale, employeArgumentCaptor.getValue().getPerformance());
     }
 
-    // Recherche d'un employé qui n'est pas présent dans la base.
+    //Recherche d'un employé qui n'est pas présent dans la base.
     @Test
     public void testCalculPerformanceCommercialWithNoEmployeInBDD() throws EmployeException {
-        // Given
+        //Given
         String matricule = "C12345";
         Long caTraite = 1500L;
         Long objectifCa = 1500L;
         when(employeRepository.findByMatricule(matricule)).thenReturn(null);
 
-        // When/Then
+        //When/Then
         EmployeException e = Assertions.assertThrows(EmployeException.class, () -> employeService.calculPerformanceCommercial(matricule, caTraite, objectifCa));
         Assertions.assertEquals("Le matricule " + matricule + " n'existe pas !", e.getMessage());
     }
