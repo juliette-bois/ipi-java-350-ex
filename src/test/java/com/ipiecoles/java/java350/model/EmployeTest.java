@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
 
 public class EmployeTest {
-
     @Test
     public void testNbAnneeAncienneteNow(){
         //Given
@@ -59,4 +58,55 @@ public class EmployeTest {
         Assertions.assertThat(nbAnnees).isEqualTo(0);
     }
 
+    @Test
+    public void testAugmenterSalaireNegatif() {
+        //Given
+        Employe employe = new Employe("Doe", "John", "M00001", LocalDate.now(), 1000d, 1, 1.5);
+        employe.augmenterSalaire(-0.53);
+
+        //When
+        Double nouveauSalaire = employe.getSalaire();
+
+        //Then
+        Assertions.assertThat(nouveauSalaire).isEqualTo(470d);
+    }
+
+    @Test
+    public void testAugmenterSalairePositif() {
+        //Given
+        Employe employe = new Employe("Doe", "John", "M00001", LocalDate.now(), 1000d, 1, 1.5);
+        employe.augmenterSalaire(0.5);
+
+        //When
+        Double nouveauSalaire = employe.getSalaire();
+
+        //Then
+        Assertions.assertThat(nouveauSalaire).isEqualTo(1500);
+    }
+
+    @Test
+    public void testAugmenterSalaireNull() {
+        //Given
+        Employe employe = new Employe("Doe", "John", "M00001", LocalDate.now(), 1000d, 1, 1.5);
+        employe.augmenterSalaire(0.0);
+
+        //When
+        Double nouveauSalaire = employe.getSalaire();
+
+        //Then
+        Assertions.assertThat(nouveauSalaire).isEqualTo(1000);
+    }
+
+    @Test
+    public void testAugmenterSalaire() {
+        //Given
+        Employe employe = new Employe("Doe", "John", "M00001", LocalDate.now(), 1000d, 1, 1.5);
+        employe.augmenterSalaire(-1.5);
+
+        //When
+        Double nouveauSalaire = employe.getSalaire();
+
+        //Then
+        Assertions.assertThat(nouveauSalaire).isEqualTo(0);
+    }
 }
